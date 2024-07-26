@@ -7,28 +7,24 @@ scipy             # Scientific computing library
 
 # Visualization Libraries
 matplotlib       # 2D plotting library
-seaborn==0.11.2           # Statistical data visualization
+seaborn         # Statistical data visualization
 plotly
 streamlit
 
 # Machine Learning Frameworks
-scikit-learn==0.24.2      # Machine learning library for classification, regression, and clustering
+scikit-learn      # Machine learning library for classification, regression, and clustering
 
 
 # Jupyter Notebooks
-jupyter==1.0.0            # Interactive computing in Python
-notebook==6.4.3           # Jupyter notebook web application
+jupyter          # Interactive computing in Python
+notebook           # Jupyter notebook web application
 
 # Development and Testing
-black==21.4b2             # Code formatter for Python
-flake8==4.0.1             # Code linting tool
-pytest==7.4.2             # Testing framework for Python
+black            # Code formatter for Python
+flake8            # Code linting tool
+pytest            # Testing framework for Python
 
 # Additional Libraries for Data Science
-statsmodels==0.13.0       # Statistical models for Python
-scikit-image==0.18.3      # Image processing library
-xgboost==1.4.2            # Gradient boosting library
-
-# Data Access and Storage
-sqlalchemy==1.4.23         # SQL toolkit and Object-Relational Mapping (ORM)
-pymysql==1.0.2             # MySQL adapter for Python
+statsmodels       # Statistical models for Python
+scikit-image      # Image processing library
+xgboost            # Gradient boosting library
