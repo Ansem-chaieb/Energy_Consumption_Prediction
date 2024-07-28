@@ -1,13 +1,11 @@
-import pandas as pd
 import logging
-from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+
 from statsmodels.tsa.arima.model import ARIMA
 from prophet import Prophet
-from keras.models import Sequential, load_model
+from keras.models import Sequential
 from keras.layers import LSTM, Dense
 from keras.optimizers import Adam
-import math
+
 
 from src.dataset import EnergyDataset
 

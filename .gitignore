@@ -6,3 +6,6 @@ notebooks/models/
 .streamlit/secrets.toml
 notebooks/test_data.csv
 notebooks/lstm_colab_100_1.png
+notebooks/target_data.csv
+notebooks/lstm_colab_100_2.png
+notebooks/lstm_summary_2.csv

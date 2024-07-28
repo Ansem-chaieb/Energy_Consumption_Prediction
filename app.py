@@ -1,5 +1,7 @@
 import os
-import datetime
+import boto3
+from io import StringIO
+
 import logging
 import traceback
 from flask import Flask, request, jsonify
@@ -17,9 +19,16 @@ logger = logging.getLogger(__name__)
 # Load model
 model_path = 'notebooks/models/lstm_model.h5'
 
+def read_csv_from_s3(bucket_name, file_key):
+      s3 = boto3.client('s3')
+      response = s3.get_object(Bucket=bucket_name, Key=file_key)
+      data = response['Body'].read().decode('utf-8')
+      df = pd.read_csv(StringIO(data))
+      return df
+
 try:
     model = load_model(model_path)
-    data = pd.read_csv('notebooks/test_data.csv')
+    data = read_csv_from_s3(bucket_name, 'test_data.csv')
     logger.info("Model loaded successfully.")
 except Exception as e:
     logger.error("Error loading model: %s", e)
@@ -41,7 +50,7 @@ def predict():
 
             # datetime_obj = datetime.datetime.fromisoformat(full_datetime)
             logger.info("Full date param: %s", full_datetime)
-            matching_row = data[data['date'] == full_datetime]
+            matching_row = data[data['datetime'] == full_datetime]
             
             if matching_row.empty:
                   return jsonify({'error': 'No matching date found in the data'}), 404
@@ -58,7 +67,7 @@ def predict():
 
             # Return result
             response = {
-            'active_power': predicted_active_power
+            'active_power':  np.round(predicted_active_power* 10) / 10
             }
             return jsonify(response)
 

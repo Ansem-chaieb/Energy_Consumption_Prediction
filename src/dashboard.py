@@ -3,11 +3,14 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 
-import streamlit as st
-import pandas as pd
-
 import boto3
 from io import StringIO
+
+import pandas as pd
+import numpy as np
+import streamlit as st
+from datetime import datetime
+from tensorflow.keras.models import load_model
 
 from src.plots import create_active_power_histogram, create_box_plot, create_correlation_heatmap, create_count_plot, create_daily_avg_plot, create_energy_features_plot, create_feature_histograms, create_heatmap, create_weather_feature_plots
 
@@ -22,11 +25,6 @@ def read_csv_from_s3(bucket_name, file_key):
     df = pd.read_csv(StringIO(data))
     return df
 
-def load_data():
-    data = pd.read_csv("data/raw/data.csv")
-    data['date'] = pd.to_datetime(data['date'])
-    data.set_index('date', inplace=True)
-    return data
 
 bucket_name = 'my-energy-data-bucket'
 file_key = 'data.csv'
@@ -223,7 +221,50 @@ def main():
                 st.write(f"### {feature.replace('_', ' ').title()}")
                 st.dataframe(pd.DataFrame(summary_df.loc[[feature]]).T, use_container_width=True)
     else:
-              pass
+        model = load_model('notebooks/lstm_model_2.h5')
+        model_details = pd.DataFrame({
+                                    'Model': ['LSTM','LSTM'],
+                                    'MAE': ["101.12", "66.38"],
+                                    'RMSE': ["156.12", "101.89"],
+                                }, index=['Training', 'Testing'])
+        st.subheader('Model Details')
+        st.dataframe(model_details)
 
+        st.subheader('Testing Predictions')
+        st.image("./notebooks/lstm_colab_100_3.png", caption="Testing Predictions")
+        
+        # User input for datetime
+        st.subheader('Prediction for Specific Datetime')
+        min_date = datetime.strptime('2023-10-12 00:00:00', '%Y-%m-%d %H:%M:%S')
+        max_date = datetime.strptime('2024-01-05 23:59:00', '%Y-%m-%d %H:%M:%S')
+        selected_datetime = st.date_input('Select Date', min_value=min_date, max_value=max_date)
+        selected_time = st.time_input('Select Time', value=datetime.min.time())
+        selected_datetime = datetime.combine(selected_datetime, selected_time)
+        
+        test = read_csv_from_s3(bucket_name, 'test_data.csv')
+        target = read_csv_from_s3(bucket_name, 'target_data.csv')       
+        
+        feature_columns = ['voltage', 'reactive_power', 'power_factor', 'temp', 'feels_like',
+                              'temp_min', 'temp_max', 'pressure', 'humidity', 'speed', 'deg',
+                              'active_power_lag_1', 'active_power_lag_8', 'year', 'month_of_year',
+                              'week_of_year', 'day_of_year', 'day_of_week', 'hour_of_day',
+                              'is_weekend', 'is_holiday', 'main_Clouds', 'main_Drizzle', 'main_Fog',
+                              'main_Haze', 'main_Mist', 'main_Rain', 'main_Thunderstorm'] 
+         
+        matching_row = test[test['datetime'] == str(selected_datetime)]
+        matching_target_row = target[target['date'] == str(selected_datetime)]['active_power'].values[0]
+        
+        features = matching_row[feature_columns].values
+        print("selected_datetime:" , selected_datetime)
+        features_reshaped = features.reshape((1, features.shape[0], features.shape[1]))
+        
+        prediction = model.predict(features_reshaped)
+        predicted_active_power = float(prediction[0, 0])
+        
+        st.write(f"Prediction: {np.round(predicted_active_power* 10) / 10}")
+        st.write(f"Actual: {matching_target_row}")
+        
+        
+        
 if __name__ == "__main__":
     main()

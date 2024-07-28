@@ -5,9 +5,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 import pandas as pd
 import logging
 
-
-import src.config.constants as c
-import src.config.settings as s
 from src.features import (
     seasonality_features,
     datetime_features,
