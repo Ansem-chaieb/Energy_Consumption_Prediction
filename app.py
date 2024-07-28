@@ -9,15 +9,16 @@ import numpy as np
 import pandas as pd
 from tensorflow.keras.models import load_model
 
-# Initialize Flask app
+
 app = Flask(__name__)
 
-# Set up logging
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Load model
+
 model_path = 'notebooks/models/lstm_model.h5'
+bucket_name = 'my-energy-data-bucket'
 
 def read_csv_from_s3(bucket_name, file_key):
       s3 = boto3.client('s3')
@@ -38,7 +39,6 @@ except Exception as e:
 def predict():
       try:
             full_datetime = request.args.get('datetime')
-            # Select features
 
             feature_columns = ['voltage', 'reactive_power', 'power_factor', 'temp', 'feels_like',
                               'temp_min', 'temp_max', 'pressure', 'humidity', 'speed', 'deg',
@@ -48,7 +48,6 @@ def predict():
                               'main_Haze', 'main_Mist', 'main_Rain', 'main_Thunderstorm']  
 
 
-            # datetime_obj = datetime.datetime.fromisoformat(full_datetime)
             logger.info("Full date param: %s", full_datetime)
             matching_row = data[data['datetime'] == full_datetime]
             
@@ -61,11 +60,9 @@ def predict():
 
             features_reshaped = features.reshape((1, features.shape[0], features.shape[1]))
             
-            # Make prediction
             prediction = model.predict(features_reshaped)
             predicted_active_power = float(prediction[0, 0])
 
-            # Return result
             response = {
             'active_power':  np.round(predicted_active_power* 10) / 10
             }
