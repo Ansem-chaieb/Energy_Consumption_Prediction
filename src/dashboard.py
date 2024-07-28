@@ -221,7 +221,7 @@ def main():
                 st.write(f"### {feature.replace('_', ' ').title()}")
                 st.dataframe(pd.DataFrame(summary_df.loc[[feature]]).T, use_container_width=True)
     else:
-        model = load_model('notebooks/lstm_model_2.h5')
+        model = load_model('notebooks/lstm_model_2.h5', compile=False)
         model_details = pd.DataFrame({
                                     'Model': ['LSTM','LSTM'],
                                     'MAE': ["101.12", "66.38"],
