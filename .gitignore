@@ -10,3 +10,4 @@ notebooks/target_data.csv
 notebooks/lstm_colab_100_2.png
 notebooks/lstm_summary_2.csv
 .env
+data/raw/data.csv
