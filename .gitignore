@@ -1,5 +1,8 @@
 myenv/
 __pycache__/
 doc/
-
+data/data.csv
 notebooks/models/
+.streamlit/secrets.toml
+notebooks/test_data.csv
+notebooks/lstm_colab_100_1.png

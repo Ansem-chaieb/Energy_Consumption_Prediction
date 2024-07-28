@@ -15,11 +15,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Load model
-model_path = 'models/lstm_model.h5'
+model_path = 'notebooks/models/lstm_model.h5'
 
 try:
     model = load_model(model_path)
-    data = pd.read_csv('test_data.csv')
+    data = pd.read_csv('notebooks/test_data.csv')
     logger.info("Model loaded successfully.")
 except Exception as e:
     logger.error("Error loading model: %s", e)
@@ -31,20 +31,12 @@ def predict():
             full_datetime = request.args.get('datetime')
             # Select features
 
-            feature_columns = ['voltage', 'reactive_power', 'apparent_power', 'power_factor', 
-                                    'temp', 'feels_like', 'temp_min', 'temp_max', 'pressure', 'humidity',
-                                    'speed', 'deg', 'active_power_lag_1', 'active_power_lag_8', 'year',
-                                    'month_of_year', 'week_of_year', 'day_of_year', 'day_of_week', 'hour_of_day', 
-                                    'is_weekend', 'is_holiday', 'main_Clouds', 'main_Drizzle', 'main_Fog',
-                                    'main_Haze', 'main_Mist', 'main_Rain', 'main_Thunderstorm', 
-                                    'description_clear sky', 'description_drizzle', 'description_few clouds', 
-                                    'description_fog', 'description_haze', 'description_heavy intensity rain', 
-                                    'description_light intensity drizzle', 'description_light rain',
-                                    'description_mist', 'description_moderate rain', 'description_overcast clouds',
-                                    'description_scattered clouds', 'description_thunderstorm',
-                                    'description_thunderstorm with rain', 'description_very heavy rain',
-                                    'temp_mean_window_24', 'temp_std_window_24', 
-                                    'feels_like_mean_window_24', 'feels_like_std_window_24']  
+            feature_columns = ['voltage', 'reactive_power', 'power_factor', 'temp', 'feels_like',
+                              'temp_min', 'temp_max', 'pressure', 'humidity', 'speed', 'deg',
+                              'active_power_lag_1', 'active_power_lag_8', 'year', 'month_of_year',
+                              'week_of_year', 'day_of_year', 'day_of_week', 'hour_of_day',
+                              'is_weekend', 'is_holiday', 'main_Clouds', 'main_Drizzle', 'main_Fog',
+                              'main_Haze', 'main_Mist', 'main_Rain', 'main_Thunderstorm']  
 
 
             # datetime_obj = datetime.datetime.fromisoformat(full_datetime)
@@ -62,11 +54,11 @@ def predict():
             
             # Make prediction
             prediction = model.predict(features_reshaped)
-            predicted_active_power = prediction[0, 0]
+            predicted_active_power = float(prediction[0, 0])
 
             # Return result
             response = {
-            'next_active_power': predicted_active_power
+            'active_power': predicted_active_power
             }
             return jsonify(response)
 

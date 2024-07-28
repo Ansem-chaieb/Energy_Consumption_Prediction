@@ -33,3 +33,6 @@ keras
 tensorflow
 
 flask
+joblib
+gunicorn
+boto3

@@ -9,6 +9,8 @@ from io import BytesIO
 color_scheme = px.colors.qualitative.Dark2
 
 def create_daily_avg_plot(data):
+    data['date'] = pd.to_datetime(data['date'])
+    data.set_index('date', inplace=True)
     daily_data = data['active_power'].resample('D').mean().reset_index()
     fig = px.line(daily_data, x='date', y='active_power',
                   title='Daily Average Active Power over Time: 2022-11-05 - 2024-01-05',
