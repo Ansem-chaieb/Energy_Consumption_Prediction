@@ -33,6 +33,7 @@ keras
 tensorflow
 h5py
 protobuf==3.20.1
+python-dotenv
 
 flask
 joblib
