@@ -112,4 +112,4 @@ energy-consumption-prediction/
 
 ## 🤝 Contributing Members
 
-**Data Scientist: [Asem Chaieb](mailto:ansem.cb@gmail.com)**
+**Data Scientist: [Ansem Chaieb](mailto:ansem.cb@gmail.com)**
