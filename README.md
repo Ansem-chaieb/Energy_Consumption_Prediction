@@ -28,7 +28,7 @@ This project aims to predict the next value of the "active_power" column in a da
 
 Our proposed cloud infrastructure leverages AWS services to create a scalable, maintainable, and secure solution.
 
-For a detailed diagram and explanation of the infrastructure, please refer to the [pdf](docs/Household_energy_consumption.pdf) file.
+For a detailed diagram and explanation of the infrastructure, please refer to the [pdf](https://github.com/Ansem-chaieb/ve2max_assessment/blob/main/doc/Household%20energy%20consumption.pdf) file.
 
 ## 🔧 Prerequisites
 
