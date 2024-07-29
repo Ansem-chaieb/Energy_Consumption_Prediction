@@ -29,7 +29,7 @@ This project aims to predict the next value of the "active_power" column in a da
 
 Our proposed cloud infrastructure leverages AWS services to create a scalable, maintainable, and secure solution.
 
-For a detailed diagram and explanation of the infrastructure, please refer to the [pdf](docs/Cloud_Infrastructure.md) file.
+For a detailed diagram and explanation of the infrastructure, please refer to the [pdf](docs/Household_energy_consumption.pdf) file.
 
 ## Prerequisites
 
@@ -43,61 +43,73 @@ For a detailed diagram and explanation of the infrastructure, please refer to th
 
 1. Clone this repository:
 
-`https://github.com/Ansem-chaieb/ve2max_assessment.git
-cd energy-consumption-prediction`
+`https://github.com/Ansem-chaieb/ve2max_assessment.git`
+
+`cd energy-consumption-prediction`
 
 2. Build and run the Docker container:
 
-`docker-compose up --build`
+`docker build -t energy-consumption-prediction .`
 
-3. Access the Flask API at `http://localhost:5000`
-4. Access the Streamlit dashboard at `http://localhost:8501`
+`docker run -p 5000:5000 energy-consumption-prediction`
+
 
 ## API Usage
 
-To get a prediction, send a POST request to the `/predict` endpoint:
+Access the Flask API :
+- Via web browser or curl: `http://localhost:5000`
+- Using Postman: Import the provided Postman collection :
+{
+    "datetime": "2024-01-05 23:59:00"
+}
+- Using Thunder Client VS Code extension: 
+  1. Install the Thunder Client extension in VS Code
+  2. Click on the Thunder Client icon in the sidebar
+  3. Create a new request to `http://localhost:5000/predict`
+  4. Set the method to POST and add the JSON body as shown :
+  
 
-`bash
-curl -X POST -H "Content-Type: application/json" -d '{
-"temperature": 25.5,
-"humidity": 60,
-"wind_speed": 5.2,
-"previous_active_power": 1500
-}' http://localhost:5000/predict`
+Note: To run the Flask API, please ensure that you have the AWS credentials properly configured in the .env file. If you wish to execute the API, I will need to send you the necessary credentials beforehand.
+
+
+![Thunder Client Usage](images/thunder.png)
+
 
 
 ## Streamlit Dashboard
 
 The Streamlit dashboard provides interactive visualizations of the dataset and model performance. It includes:
 
-Exploratory Data Analysis (EDA) charts
-Feature importance plots
-Model performance metrics
-Real-time prediction interface
 
-Access the dashboard at: http://localhost:8501
+Access the Streamlit dashboard (EDA and model result) at :
+https://householdenergyconsumption.streamlit.app/
+
+
+<img src="images/streamlit-dashboard.gif" width=900 alt="Little example"></img>
 
 ## Project Structure
 
-energy-consumption-prediction/
-├── api/
-│   ├── app.py
-│   ├── models.py
-│   └── utils.py
-├── dashboard/
-│   └── streamlit_app.py
+```
+energy-consumption-prediction/ 
+src/
+│   ├── dataset.py        # Manages data loading, preprocessing, and train test split
+│   ├── features.py       # Responsible for feature engineering and processing
+│   ├── dashboard.py      # Contains code for creating the streamlit dashboard
+│   ├── plots.py          # Includes functions  for generating various plots and visualizations
+│   └── modeling/
+│       ├── train.py      # Handles the training process 
+│       └── predict.py    # Manages the prediction process using trained models
+│
 ├── notebooks/
-│   └── EDA.ipynb
-├── tests/
-│   └── test_api.py
+│   └── train_evaluate_models.ipynb    # Jupyter notebook for training and evaluating different models
 ├── docs/
-│   ├── Cloud_Infrastructure.md
-│   └── Operationalization.md
+│   └── Household_energy_consumption.pdf
 ├── Dockerfile
-├── docker-compose.yml
+├── app.py                # Fask application
 ├── requirements.txt
 └── README.md
+```
 
 ## Contributing Members
 
-**Data Scientist: [Full Name](@slackHandle)**
+**Data Scientist: [Ansem chaieb](ansem.cb@gmail.com)**

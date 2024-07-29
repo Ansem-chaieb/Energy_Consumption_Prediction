@@ -1,6 +1,6 @@
 myenv/
 __pycache__/
-doc/
+
 data/data.csv
 notebooks/models/
 .streamlit/secrets.toml
@@ -11,3 +11,7 @@ notebooks/lstm_colab_100_2.png
 notebooks/lstm_summary_2.csv
 .env
 data/raw/data.csv
+doc/Prediction Deployment Solution.pdf
+doc/ve2max_assessment.zip
+doc/__MACOSX/._data.csv
+doc/__MACOSX/._Prediction Deployment Solution.pdf
