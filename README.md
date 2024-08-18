@@ -45,7 +45,7 @@ For a detailed diagram and explanation of the infrastructure, please refer to th
 ```bash
 https://github.com/Ansem-chaieb/ve2max_assessment.git
 
-cd ve2max_assessment
+cd Energy_Consumption_Prediction
 ```
 
 2. Build and run the Docker container:
